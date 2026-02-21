@@ -4,12 +4,18 @@ const fs = require('fs');
 const path = require('path');
 const config = require('./config');
 
+// Supress Mongoose strictQuery deprecation warning
+mongoose.set('strictQuery', false);
+
 // MongoDB connection
 mongoose.connect(config.mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(() => console.log('MongoDB connected'))
-  .catch(console.error);
+}).then(() => console.log('✅ MongoDB connected'))
+  .catch(err => {
+    console.error('❌ MongoDB connection error:', err.message);
+    process.exit(1);
+  });
 
 const client = new Client({
   intents: [
