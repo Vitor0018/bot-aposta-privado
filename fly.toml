@@ -1,33 +1,20 @@
-# fly.toml app configuration file generated for nulla-bot on 2026-02-21T15:04:35-03:00
+# fly.toml app configuration file generated for bot-aposta-privado on 2026-02-21T18:34:13Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'nulla-bot'
-primary_region = 'gru'
+app = 'bot-aposta-privado'
+primary_region = 'iad'
 
 [build]
-  dockerfile = 'Dockerfile'
 
-[env]
-  NODE_ENV = 'production'
-
-[[services]]
-  protocol = 'tcp'
+[http_service]
   internal_port = 4000
-
-  [[services.ports]]
-    port = 80
-    handlers = ['http']
-
-  [[services.ports]]
-    port = 443
-    handlers = ['tls', 'http']
-
-  [services.concurrency]
-    type = 'connections'
-    hard_limit = 25
-    soft_limit = 20
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
 
 [[vm]]
   memory = '1gb'
