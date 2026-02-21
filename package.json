@@ -1,0 +1,13 @@
+{
+  "name": "aura0.3",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd nulla && npm run dev",
+    "start": "cd nulla && npm run start",
+    "postinstall": "cd nulla && npm install"
+  },
+  "dependencies": {
+    "mongodb": "^7.1.0"
+  }
+}

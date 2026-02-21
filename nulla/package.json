@@ -1,0 +1,26 @@
+{
+  "name": "nulla",
+  "version": "0.1.0",
+  "description": "Bot profissional de filas e apostas para Discord",
+  "main": "bot/index.js",
+  "scripts": {
+    "start": "node bot/index.js",
+    "dev": "concurrently \"nodemon bot/index.js\" \"npm run api\" \"npm run dashboard\"",
+    "api": "node api/server.js",
+    "dashboard": "cd dashboard && npm run dev",
+    "postinstall": "cd dashboard && npm install"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.0.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "mongoose": "^6.0.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.0",
+    "nodemon": "^2.0.0"
+  }
+}

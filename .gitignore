@@ -1,0 +1,8 @@
+node_modules/
+.env
+.env.*
+dist
+build
+/nulla/node_modules/
+/nulla/dashboard/node_modules/
+/nulla/dashboard/dist/
