@@ -10,6 +10,7 @@ module.exports = {
 
     const channel = message.channel;
     const { parseChannelName, generateValues } = require('../services/queue');
+    const GuildConfig = require('../api/models/guildconfig');
 
     const parsed = parseChannelName(channel.name);
     if (!parsed) return message.reply('Nome de canal inválido.');
@@ -17,6 +18,14 @@ module.exports = {
     const { vs, modo } = parsed; // parseChannelName now returns modo alias
     // build list of values in descending order instead of ascending
     const values = generateValues().slice().reverse();
+
+    // load server-specific config
+    const guildId = channel.guild.id;
+    const cfg = await GuildConfig.findOne({ guildId });
+    const emojiNormal = (cfg && cfg.emoji_normal) || '🧊';
+    const emojiPremium = (cfg && cfg.emoji_premium) || '🧊';
+    const emojiSair = (cfg && cfg.emoji_sair) || '🟥';
+    const embedColor = (cfg && cfg.embed_color) || '#0099ff';
 
     // delete previous messages by bot in channel (basic cleanup)
     const fetched = await channel.messages.fetch({ limit: 100 });
@@ -34,6 +43,11 @@ module.exports = {
     for (const valor of values) {
       const embed = {
         title: `${vs} | ${guildName}`,
+        color: embedColor,
+        // bot avatar as thumbnail
+        thumbnail: client.user.avatarURL({ dynamic: true, size: 256 }),
+        // use bot banner if available, otherwise guild icon
+        image: bannerUrl ? { url: bannerUrl } : iconUrl ? { url: iconUrl } : undefined,
         description: `🎮 Modo: ${modo}\n💰 Valor: R$ ${valor.toFixed(2)}\n👤 Jogadores: Nenhum jogador na fila`,
       };
 
@@ -49,19 +63,19 @@ module.exports = {
         components: [
           {
             type: 2,
-            label: '🧊 Gelo Normal',
+            label: `${emojiNormal} Gelo Normal`,
             style: 1,
             custom_id: `fila_normal_${valor}`,
           },
           {
             type: 2,
-            label: '🧊 Gelo Infinito',
+            label: `${emojiPremium} Gelo Infinito`,
             style: 1,
             custom_id: `fila_premium_${valor}`,
           },
           {
             type: 2,
-            label: '🟥 Sair da fila',
+            label: `${emojiSair} Sair da fila`,
             style: 4,
             custom_id: `fila_sair_${valor}`,
           },

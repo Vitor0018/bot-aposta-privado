@@ -66,7 +66,11 @@ module.exports = {
         const modRole = interaction.guild.roles.cache.find(r => r.name === 'Mediador');
         let mention = '';
         if (modRole) mention = `<@&${modRole.id}>`;
-        await interaction.channel.send(`${mention} fila ${vs} R$${valor.toFixed(2)} ${action === 'premium' ? 'premium' : 'normal'} atingiu limite e foi bloqueada.`);
+        // fetch guild-specific emojis
+        const GuildConfig = require('../../api/models/guildconfig');
+        const cfg = await GuildConfig.findOne({ guildId: interaction.guild.id });
+        const emojiBrake = (cfg && cfg.emoji_sair) || '🟥';
+        await interaction.channel.send(`${mention} fila ${vs} R$${valor.toFixed(2)} ${action === 'premium' ? 'premium' : 'normal'} atingiu limite e foi bloqueada. ${emojiBrake}`);
       }
     }
   },
