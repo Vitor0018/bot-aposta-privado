@@ -1,35 +1,36 @@
-# Fly.io configuration for NULLA Bot
-app = "nulla-bot"
-primary_region = "gru"  # São Paulo, Brasil
+# fly.toml app configuration file generated for nulla-bot on 2026-02-21T15:04:35-03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'nulla-bot'
+primary_region = 'gru'
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = 'Dockerfile'
 
 [env]
-  NODE_ENV = "production"
+  NODE_ENV = 'production'
 
 [[services]]
+  protocol = 'tcp'
   internal_port = 4000
-  protocol = "tcp"
+
+  [[services.ports]]
+    port = 80
+    handlers = ['http']
+
+  [[services.ports]]
+    port = 443
+    handlers = ['tls', 'http']
 
   [services.concurrency]
-    type = "connections"
+    type = 'connections'
     hard_limit = 25
     soft_limit = 20
 
-  [[services.ports]]
-    handlers = ["http"]
-    port = 80
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
-
-[checks]
-  [checks.status]
-    grace_period = "30s"
-    interval = "15s"
-    method = "GET"
-    path = "/health"
-    protocol = "http"
-    timeout = "5s"
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 1024

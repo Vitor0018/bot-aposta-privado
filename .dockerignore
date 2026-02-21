@@ -4,4 +4,8 @@ node_modules
 .gitignore
 dist
 build
-*.log
+*.log.vscode
+.idea
+nulla/node_modules
+dashboard/node_modules
+dashboard/dist
