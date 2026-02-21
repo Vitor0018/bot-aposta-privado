@@ -6,6 +6,9 @@ module.exports = {
   description: 'Mostra status das filas e apostas no canal',
   async execute(message, args, client) {
     try {
+      if (!Fila.collection.conn.readyState) {
+        return message.reply('Banco de dados não está conectado.');
+      }
       const canalId = message.channel.id;
       const filas = await Fila.find({ canalId });
       const apostas = await Aposta.find({ canalId });
@@ -22,7 +25,7 @@ module.exports = {
       }
       message.reply(text);
     } catch (err) {
-      console.error(err);
+      console.error('status command error:', err);
       message.reply('Erro ao obter status.');
     }
   },

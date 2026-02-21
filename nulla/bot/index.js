@@ -39,4 +39,16 @@ for (const file of eventFiles) {
   else client.on(ev.name, (...args) => ev.execute(...args, client));
 }
 
+client.on('error', error => {
+  console.error('Discord client error:', error);
+});
+
+client.on('warn', info => {
+  console.warn('Discord warning:', info);
+});
+
+process.on('unhandledRejection', error => {
+  console.error('Unhandled promise rejection:', error);
+});
+
 client.login(config.token);

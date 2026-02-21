@@ -7,6 +7,9 @@ module.exports = {
   description: 'Finaliza uma aposta e escolhe o vencedor',
   async execute(message, args, client) {
     try {
+      if (!Aposta.collection.conn.readyState) {
+        return message.reply('Banco de dados não está conectado.');
+      }
       const canalId = message.channel.id;
       const aposta = await Aposta.findOne({ canalId, status: 'open' });
       if (!aposta) return message.reply('Não há aposta aberta neste canal.');
@@ -35,7 +38,7 @@ module.exports = {
 
       message.channel.send(`Aposta finalizada. Vencedor: <@${winnerId}>`);
     } catch (err) {
-      console.error(err);
+      console.error('finalizaraposta command error:', err);
       message.reply('Erro ao finalizar aposta.');
     }
   },

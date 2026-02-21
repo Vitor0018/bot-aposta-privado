@@ -7,6 +7,9 @@ module.exports = {
   description: 'Cria uma aposta a partir da fila atual fechada',
   async execute(message, args, client) {
     try {
+      if (!Fila.collection.conn.readyState) {
+        return message.reply('Banco de dados não está conectado.');
+      }
       const canalId = message.channel.id;
       const fila = await Fila.findOne({ canalId, status: 'closed' });
       if (!fila) return message.reply('Não há fila fechada neste canal para criar aposta.');
@@ -23,7 +26,7 @@ module.exports = {
       await Historico.create({ usuario: message.author.id, acao: 'criaraposta', detalhes: { canalId, valor: fila.valor } });
       message.reply('Aposta criada a partir da fila.');
     } catch (err) {
-      console.error(err);
+      console.error('criaraposta command error:', err);
       message.reply('Erro ao criar aposta.');
     }
   },

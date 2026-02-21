@@ -10,10 +10,13 @@ module.exports = {
     }
 
     try {
+      if (!Fila.collection.conn.readyState) {
+        return message.reply('Banco de dados não está conectado.');
+      }
       await Fila.deleteMany({ canalId: message.channel.id });
       message.reply('Filas do canal removidas do banco.');
     } catch (err) {
-      console.error(err);
+      console.error('limparfilas command error:', err);
       message.reply('Erro ao limpar filas.').catch(console.error);
     }
   },
