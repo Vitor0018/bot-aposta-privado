@@ -6,6 +6,6 @@
   },
   "deploy": {
     "numReplicas": 1,
-    "startCommand": "cd nulla && npm run start"
+    "startCommand": "npm start"
   }
 }
