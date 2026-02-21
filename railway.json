@@ -1,0 +1,11 @@
+{
+  "configVersion": 3,
+  "$schema": "http://json.schemastore.org/railway.json",
+  "build": {
+    "builder": "DOCKERFILE"
+  },
+  "deploy": {
+    "numReplicas": 1,
+    "startCommand": "cd nulla && npm run start"
+  }
+}
