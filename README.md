@@ -94,8 +94,9 @@ Railway fará rebuild automático.
 
 ### Administração
 - `!gerarfilas` - Gera cards de filas para o canal
-- `!limparfilas` - Remove todas as filas do banco de dados
+- `!limpar` (alias `!limparfilas`) - Remove todas as filas do banco de dados
 - `!status` - Mostra status das filas e apostas do canal
+- `!editar <chave> <valor>` - Ajusta emojis ou cor das filas (`emoji_normal`, `emoji_premium`, `emoji_sair`, `color`)
 
 ### Filas (Botões)
 - 🧊 Gelo Normal - Entra em fila normal
