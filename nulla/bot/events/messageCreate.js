@@ -11,7 +11,11 @@ module.exports = {
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const cmdName = args.shift().toLowerCase();
 
-    const command = client.commands.get(cmdName);
+    let command = client.commands.get(cmdName);
+    if (!command) {
+      // try alias lookup
+      command = client.commands.find(c => c.aliases && c.aliases.includes(cmdName));
+    }
     if (!command) return;
 
     try {

@@ -2,7 +2,8 @@ const Fila = require('../../api/models/fila');
 
 module.exports = {
   name: 'limpar',
-  description: 'Limpa todas as filas deste canal da base de dados (alias: limparfilas)',
+  aliases: ['limparfilas'],
+  description: 'Limpa todas as filas deste canal da base de dados',
   async execute(message, args, client) {
     const allowed = ['Dono', 'Administrador'];
     if (!message.member.roles.cache.some(r => allowed.includes(r.name))) {
