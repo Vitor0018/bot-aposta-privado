@@ -2,12 +2,12 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci
-
+# Copy only nulla directory
 COPY nulla ./nulla
 WORKDIR /app/nulla
-RUN npm ci
+
+# Install dependencies
+RUN npm ci --production
 
 EXPOSE 4000
 

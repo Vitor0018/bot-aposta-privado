@@ -4,10 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "cd nulla && npm run dev",
-    "start": "cd nulla && npm run start",
-    "postinstall": "cd nulla && npm install"
-  },
-  "dependencies": {
-    "mongodb": "^7.1.0"
+    "start": "cd nulla && npm run start"
   }
 }
