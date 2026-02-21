@@ -7,19 +7,34 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 // Supress Mongoose strictQuery deprecation warning
 mongoose.set('strictQuery', false);
 
-const connect = async () => {
-  try {
-    if (!process.env.MONGO_URI) {
-      throw new Error('MONGO_URI environment variable is not set');
-    }
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('✅ MongoDB connected');
-  } catch (err) {
-    console.error('❌ Mongo connection error:', err.message);
+const wait = ms => new Promise(res => setTimeout(res, ms));
+
+const connect = async (retries = 3, backoff = 2000) => {
+  if (!process.env.MONGO_URI) {
+    console.error('❌ MONGO_URI não está configurada. Defina a variável de ambiente MONGO_URI.');
     process.exit(1);
+  }
+
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      await mongoose.connect(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+      console.log('✅ MongoDB connected');
+      return;
+    } catch (err) {
+      console.error(`❌ Mongo connection attempt ${attempt} failed:`, err.message);
+      if (attempt < retries) {
+        console.log(`↻ Retrying in ${backoff}ms...`);
+        // exponential backoff
+        await wait(backoff * attempt);
+      } else {
+        console.error('❌ All MongoDB connection attempts failed.');
+        console.error('Tip: verifique MONGO_URI, usuário/senha, e whitelist de IPs no Atlas.');
+        process.exit(1);
+      }
+    }
   }
 };
 
