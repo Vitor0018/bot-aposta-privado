@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { connect } = require('./database');
+const healthRoutes = require('./routes/health');
 
 // models
 const Fila = require('./models/fila');
@@ -11,6 +12,9 @@ const Historico = require('./models/historico');
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// health check route for Fly.io
+app.use(healthRoutes);
 
 // connect to mongo
 connect();
