@@ -30,6 +30,6 @@ module.exports = {
       cfg[key] = value;
     }
     await cfg.save();
-    message.reply(`Configuração \\`${key}\\` atualizada para \\`${value}\\`.`);
+    message.reply(`Configuração \`${key}\` atualizada para \`${value}\`.`);
   },
 };
